@@ -9,26 +9,38 @@ const Button = ({ handleClick, text }) => (
 const Percentage = ({ pos, count }) => {
   console.log('positive', pos)
   console.log('amount', count)
-  const positive = (pos / count) * 100
+  const positive = Math.round(((pos / count) * 100) * 100) / 100
   if (isNaN(positive)) {
     return (
-      <div>
-        <p>Positive 0 %</p>
-      </div>
+
+      <table>
+        <tbody>
+          <tr>
+            <td>Positive</td><td>  0 %</td>
+          </tr>
+        </tbody>
+      </table>
+
     )
   }
   return (
-    <div>
-      <p>Positive {positive} %</p>
-    </div>
-  )
 
+    <table>
+      <tbody>
+        <tr>
+          <td>
+            Positive</td><td> {positive} %</td>
+        </tr>
+      </tbody>
+    </table>
+
+  )
 }
 
 const Average = ({ sum, count }) => {
   console.log('sum', sum)
   console.log('count', count)
-  const summa = sum / count
+  const summa = Math.round(sum / count * 100) / 100
   if (isNaN(summa)) {
     return (
       <div>
@@ -36,13 +48,51 @@ const Average = ({ sum, count }) => {
       </div>
     )
   }
-
   return (
     <div>
-      <p>
-        Average {summa}
-      </p>
-    </div>)
+      <table>
+        <tbody>
+          <tr>
+            <td><StatisticLine text='Average' /></td><td><StatisticLine value={summa} /></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+const Statistics = (props) => {
+  if (props.all === 0) {
+    return (
+      <div>No feedback given</div>
+    )
+  }
+  return (
+    <div>
+      <table>
+        <tbody>
+          <tr>
+            <td><StatisticLine text='Good' /></td><td> <StatisticLine value={props.good} /></td>
+          </tr><tr>
+            <td><StatisticLine text='Neutral' /></td><td> <StatisticLine value={props.neutral} /></td>
+          </tr><tr>
+            <td><StatisticLine text='Bad' /></td><td> <StatisticLine value={props.bad} /></td>
+          </tr><tr>
+            <td><Average sum={props.average} count={props.all} /></td>
+          </tr><tr>
+            <td><Percentage pos={props.good} count={props.all} /></td>
+          </tr>
+        </tbody>
+      </table>
+    </div >
+  )
+}
+const StatisticLine = (props) => {
+  return (
+    <div>
+      <p>{props.text} {props.value}</p>
+    </div>
+  )
 }
 
 const App = () => {
@@ -67,21 +117,14 @@ const App = () => {
     setAverage(average - 1)
   }
 
-
   return (
     <div>
       <h1>Give feedback</h1>
       <Button handleClick={handlesetGood} text='Good' />
       <Button handleClick={handlesetNeutral} text='Neutral' />
       <Button handleClick={handlesetBad} text='Bad' />
-
       <h1>statistics</h1>
-      <p>Good {good}</p>
-      <p>Neutral {neutral}</p>
-      <p>Bad {bad}</p>
-      <p>All {all}</p>
-      <Average sum={average} count={all} />
-      <Percentage pos={good} count={all} />
+      <Statistics good={good} neutral={neutral} bad={bad} all={all} average={average} />
     </div>
   )
 }
