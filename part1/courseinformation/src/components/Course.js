@@ -1,11 +1,12 @@
 import React from "react";
 
 const Course = ({ course }) => {
-    const courses = course.parts.map((x, i) => (
-        <p key={i}>
-            {x.name} {x.exercises}
-        </p>
-    ))
+    console.log('course', course)
+
+    const courses = course.parts.map(parts => <p key={parts.id}>
+        {parts.name} {parts.exercises}</p>)
+
+
     const total = course.parts.reduce((sum, order) => {
         console.log('what is happening ', sum, order)
         return sum + order.exercises
