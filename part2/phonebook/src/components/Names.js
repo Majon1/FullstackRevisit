@@ -1,9 +1,12 @@
 import React from "react"
 
-const Names = ({ name }) => {
-    console.log('persons', name.name)
+const Names = ({ person, found }) => {
+    console.log('persons:', person)
+    const filtering = person.filter(person => person.name.toLowerCase().includes(found.toLowerCase()))
     return (
-        <li>{name.name}</li>
+        <div>
+            {filtering.map(person => <div key={person.name}> {person.name} {person.number}</div>)}
+        </div>
     )
 }
 
